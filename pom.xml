@@ -4,7 +4,7 @@
 
 	<groupId>org.liquibase.ext</groupId>
 	<artifactId>liquibase-hibernate5</artifactId>
-	<version>3.7-SNAPSHOT</version>
+	<version>3.6-fix176</version>
 
 	<name>Liquibase Hibernate Integration</name>
 	<description>Liquibase extension for hibernate integration including generating changesets based on changed
@@ -136,7 +136,7 @@
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
-			<version>3.5.3</version>
+			<version>3.6.2-fix3192</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>

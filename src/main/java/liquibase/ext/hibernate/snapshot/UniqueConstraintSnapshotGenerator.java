@@ -43,7 +43,7 @@ public class UniqueConstraintSnapshotGenerator extends HibernateSnapshotGenerato
                 org.hibernate.mapping.UniqueKey hibernateUnique = (org.hibernate.mapping.UniqueKey) uniqueIterator.next();
 
                 UniqueConstraint uniqueConstraint = new UniqueConstraint();
-                uniqueConstraint.setName(hibernateUnique.getName());
+                uniqueConstraint.setName(hibernateUnique.getName().toLowerCase());
                 uniqueConstraint.setTable(table);
                 Iterator columnIterator = hibernateUnique.getColumnIterator();
                 int i = 0;
@@ -65,7 +65,7 @@ public class UniqueConstraintSnapshotGenerator extends HibernateSnapshotGenerato
                 if (column.isUnique()) {
                     UniqueConstraint uniqueConstraint = new UniqueConstraint();
                     uniqueConstraint.setTable(table);
-                    String name = "UC_" + table.getName().toUpperCase() + column.getName().toUpperCase() + "_COL";
+                    String name = "uk_" + table.getName().toLowerCase() + column.getName().toLowerCase();
                     if (name.length() > 64) {
                         name = name.substring(0, 63);
                     }
@@ -85,7 +85,7 @@ public class UniqueConstraintSnapshotGenerator extends HibernateSnapshotGenerato
                 UniqueConstraint uc = ucIter.next();
                 if (uc.getName() == null || uc.getName().isEmpty()) {
                     String name = table.getName() + uc.getColumnNames();
-                    name = "UCIDX" + hashedName(name);
+                    name = "uk_" + hashedName(name);
                     uc.setName(name);
                 }
             }

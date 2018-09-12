@@ -62,6 +62,16 @@ public class PrimaryKeySnapshotGenerator extends HibernateSnapshotGenerator {
                         LOG.warning("Changing hibernate primary key name to " + hbnPrimaryKeyName);
                     }
                 }
+
+                if (hbnPrimaryKeyName != null) {
+                    if (hbnPrimaryKeyName.endsWith("_" + PK)) {
+                        hbnPrimaryKeyName = changePrimaryKeyName(hbnPrimaryKeyName,"_" + PK);
+                    } else if (hbnPrimaryKeyName.endsWith(PK)) {
+                        hbnPrimaryKeyName = changePrimaryKeyName(hbnPrimaryKeyName, PK);
+                    }
+                    hbnPrimaryKeyName = hbnPrimaryKeyName.toLowerCase();
+                }
+
                 pk.setName(hbnPrimaryKeyName);
                 pk.setTable(table);
                 for (Object hibernateColumn : hibernatePrimaryKey.getColumns()) {
@@ -71,7 +81,7 @@ public class PrimaryKeySnapshotGenerator extends HibernateSnapshotGenerator {
                 LOG.info("Found primary key " + pk.getName());
                 table.setPrimaryKey(pk);
                 Index index = new Index();
-                index.setName("IX_" + pk.getName());
+                index.setName("ix_" + pk.getName());
                 index.setTable(table);
                 index.setColumns(pk.getColumns());
                 index.setUnique(true);
@@ -79,6 +89,13 @@ public class PrimaryKeySnapshotGenerator extends HibernateSnapshotGenerator {
                 table.getIndexes().add(index);
             }
         }
+    }
+
+    private String changePrimaryKeyName(String hbnPrimaryKeyName, String oldValue) {
+        hbnPrimaryKeyName =
+            hbnPrimaryKeyName.substring(0, hbnPrimaryKeyName.lastIndexOf(oldValue)) + "_pkey";
+        LOG.warning("Changing hibernate primary key name to " + hbnPrimaryKeyName);
+        return hbnPrimaryKeyName;
     }
 
 }

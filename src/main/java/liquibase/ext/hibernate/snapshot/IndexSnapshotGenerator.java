@@ -19,7 +19,7 @@ public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
         if (example.getSnapshotId() != null) {
             return example;
         }
-        Table table = ((Index) example).getTable();
+        Relation table = ((Index) example).getTable();
         org.hibernate.mapping.Table hibernateTable = findHibernateTable(table, snapshot);
         if (hibernateTable == null) {
             return example;
@@ -28,8 +28,8 @@ public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
         while (indexIterator.hasNext()) {
             org.hibernate.mapping.Index hibernateIndex = (org.hibernate.mapping.Index) indexIterator.next();
             Index index = new Index();
-            index.setTable(table);
-            index.setName(hibernateIndex.getName());
+            index.setRelation(table);
+            index.setName(hibernateIndex.getName().toLowerCase());
             Iterator columnIterator = hibernateIndex.getColumnIterator();
             while (columnIterator.hasNext()) {
                 org.hibernate.mapping.Column hibernateColumn = (org.hibernate.mapping.Column) columnIterator.next();
@@ -62,7 +62,7 @@ public class IndexSnapshotGenerator extends HibernateSnapshotGenerator {
                 org.hibernate.mapping.Index hibernateIndex = (org.hibernate.mapping.Index) indexIterator.next();
                 Index index = new Index();
                 index.setTable(table);
-                index.setName(hibernateIndex.getName());
+                index.setName(hibernateIndex.getName().toLowerCase());
                 Iterator columnIterator = hibernateIndex.getColumnIterator();
                 while (columnIterator.hasNext()) {
                     org.hibernate.mapping.Column hibernateColumn = (org.hibernate.mapping.Column) columnIterator.next();
